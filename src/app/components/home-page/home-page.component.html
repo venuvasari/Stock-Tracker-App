@@ -1,0 +1,86 @@
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-12 col-md-8">
+      <div class="card shadow-lg mb-5 bg-body rounded">
+        <div class="card-body">
+          <p class="text-center">Enter the symbol of a stock to track (i.e. AAPL, GOOGL, TSLA)</p>
+          <div class="row ms-4 g-3 justify-content-center">
+            <div class="col-9 text-center">
+              <form [formGroup]="trackStockForm" (ngSubmit)="submit()" novalidate autocomplete="off">
+                <input required type="text" class="form-control" id="stockInput" formControlName="symbol">
+                <button class="btn btn-outline-primary" id="trackBtn" type="submit"
+                  [disabled]="!trackStockForm.valid">Track
+                  Stock</button>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isLoading" class="row text-center mt-2">
+    <div class="col d-flex text-center">
+      <p class="fs-6 m-auto p-2 card fw-light">Fetching Data...Please wait a moment</p>
+    </div>
+  </div>
+
+</div>
+<div class="row d-flex justify-content-center mt-2">
+  <div class="col-md-5 m-1 card" *ngFor="let stock of stockList; let i = index">
+    <div class="row m-auto">
+      <div class="col-6">
+        <h4>{{ stock.description | titlecase }} ({{ stock.symbol }})</h4>
+      </div>
+      <div class="col-6 text-end">
+        <h4 class="btn" [id]="'remove' + stock.symbol" (click)="removeStock(i)">
+          <img src="assets/incorrect-icon.svg" [id]="'remove' + stock.symbol" alt="close button" width="18px">
+        </h4>
+      </div>
+      <hr />
+      <div class="col-8 pl-0 ml-0">
+        <ol class="p-0">
+          <li class="d-flex align-items-start">
+            <div class="ms-2 me-auto">
+              <span>Change today: </span>
+            </div>
+            <span class="badge bg-black rounded-pill">{{ stock.d | percent }}</span>
+          </li>
+          <li class="d-flex align-items-start">
+            <div class="ms-2 me-auto">
+              <span>Current price: </span>
+            </div>
+            <span class="badge bg-black rounded-pill">{{ stock.c | currency }}</span>
+          </li>
+          <li class="d-flex align-items-start">
+            <div class="ms-2 me-auto">
+              <span>Opening price: </span>
+            </div>
+            <span class="badge bg-black rounded-pill">{{ stock.o | currency }}</span>
+          </li>
+          <li class="d-flex align-items-start">
+            <div class="ms-2 me-auto">
+              <span>High price: </span>
+            </div>
+            <span class="badge bg-black rounded-pill">{{ stock.h | currency }}</span>
+          </li>
+        </ol>
+        <a routerLink="/sentiment/{{ stock.symbol }}" [id]="'sentiment' + stock.symbol" class="btn btn-warning"
+          routerLinkActive="active">
+          Go to social sentiment details
+        </a>
+      </div>
+      <div class="col-sm-4 m-auto">
+        <div class="col-12 text-center" *ngIf="stock.d>0">
+
+          <img src="assets/trendUp.png" alt="Positive Trend" width="40px" />
+        </div>
+        <div class="col-12 text-center" *ngIf="stock.d<0">
+          <img src="assets/trendDown.png" alt="Negative Trend" width="40px" />
+
+        </div>
+        <div class="col-12 text-center"></div>
+      </div>
+    </div>
+  </div>
+</div>

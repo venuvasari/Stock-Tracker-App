@@ -1,0 +1,23 @@
+.heading {
+  text-align: center;
+}
+
+.card {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.content p {
+  margin: 0;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.content img {
+  margin-left: 25px;
+}
+
+
+.section {
+  margin-top: 25px;
+}
